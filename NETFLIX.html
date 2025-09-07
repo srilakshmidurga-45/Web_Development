@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img class="netflix" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
+     <div class="box">
+    <h1 style="color: white;">Sign In</h1>
+    <form>
+      <input type="text" placeholder="Email or Phone number"><br><br>
+      <input type="password" placeholder="Password"><br><br><br>
+      <button type="submit">Sign In</button>
+
+      <div class="a">
+    <input type="checkbox"><label>Remember me?</label>
+        <a href="#">Need help?</a>
+      </div>
+
+      <div class="b">
+        New to Netflix? <a href="#">Sign up now</a>
+      </div>
+
+      <div class="c">
+        This page is protected by Google reCAPTCHA to ensure you're not a bot. 
+        <a href="#">Learn more</a>
+      </div>
+    </form>
+  </div>
+    <style>
+        body{
+            background-image: url("netflix.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .box{
+            background:black;
+            border: 1px solid #ddd;
+            border-radius:5px;
+            padding:10px;
+            margin-top: 90px;
+            margin-left: 570px;
+            box-shadow:0 2px 6px rgba(239, 235, 235, 0.2);
+            width:350px;
+            height:450px;
+            opacity:0.7;
+            color: white;
+          }
+           .box input{
+            background-color: black;
+            color: white;
+            width:300px;
+            height:30px;
+            margin-left: 20px;
+        }
+        .box button{
+            background-color: red;
+            color: white;
+            width: 200px;
+            height: 40px;
+            margin-left:70px;
+        }
+        .box button:hover{
+            background-color:darkred;
+        }
+        img{
+            width: 150px;
+            height: 60px;
+            margin-left:50px;
+        }
+         .a{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            color:white;
+         }  
+         .a label{
+            margin-left:-120px;
+         }
+         .a input{
+            height: 20px;
+            width: 20px;
+            margin-left:10px;
+         }
+         .a a{
+            color:blue;
+         }
+         .b{
+            margin-top:30px;
+         }
+         .b a{
+            color:blue;
+
+         }
+         .c{
+            margin-top: 40px;
+            font-size: 12px;
+         }
+         .c a{
+            color:blue;
+         }
+        
+    </style>
+    
+</body>
+</html>
