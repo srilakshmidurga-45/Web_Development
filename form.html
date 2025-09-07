@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image:url("register.jpg");
+      background-repeat:no-repeat;
+      background-size:cover;
+    }
+    .form-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 380px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      opacity:0.9;
+      background:radial-gradient(purple,pink,steelblue);
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .form-container input {
+      width: 94%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .form-container button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .form-container button:hover {
+      box-shadow:5px 2px 2.1px darkgreen;
+      transform:scale(1.2);
+    }
+    .error {
+      color: red;
+      font-size: 13px;
+    }
+  .form-container input:hover{
+      transform : scale(1.25);
+      background : conic-gradient(rgb(18, 156, 156),magenta,rgb(175, 175, 207));
+}
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2 style="color:black">REGISTER NOW</h2>
+    <form onsubmit="return validateForm()">
+      <input type="text" id="name" placeholder="Full Name">
+      <div id="nameError" class="error"></div>
+
+      <input type="email" id="email" placeholder="Email">
+      <div id="emailError" class="error"></div>
+
+      <input type="password" id="password" placeholder="Password">
+      <div id="passwordError" class="error"></div>
+
+      <input type="password" id="confirmPassword" placeholder="Confirm Password">
+      <div id="confirmPasswordError" class="error"></div>
+
+      <input type="text" id="phone" placeholder="Phone Number">
+      <div id="phoneError" class="error"></div>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      let isValid = true;
+
+     
+      document.querySelectorAll(".error").forEach(e => e.innerText = "");
+
+     
+      let name = document.getElementById("name").value.trim();
+      if (name === "") {
+        document.getElementById("nameError").innerText = "Name is required";
+        isValid = false;
+      }
+
+     
+      let email = document.getElementById("email").value.trim();
+      let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!email.match(emailPattern)) {
+        document.getElementById("emailError").innerText = "Enter a valid email";
+        isValid = false;
+      }
+
+     
+      let password = document.getElementById("password").value;
+      if (password.length < 6) {
+        document.getElementById("passwordError").innerText = "Password must be at least 6 characters";
+        isValid = false;
+      }
+
+ 
+      let confirmPassword = document.getElementById("confirmPassword").value;
+      if (confirmPassword !== password || confirmPassword === "") {
+        document.getElementById("confirmPasswordError").innerText = "Passwords do not match";
+        isValid = false;
+      }
+
+      
+      let phone = document.getElementById("phone").value.trim();
+      let phonePattern = /^[0-9]{10}$/;
+      if (!phone.match(phonePattern)) {
+        document.getElementById("phoneError").innerText = "Enter 10 digit phone number";
+        isValid = false;
+      }
+
+      if (isValid) {
+        alert("Registration Successful!");
+      }
+      return isValid; 
+    }
+  </script>
+
+</body>
+</html>
