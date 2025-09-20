@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Astronaut Wellness Assistant</title>
+<style>
+  /* Basic Reset and Styling */
+  body {
+    font-family: Arial, sans-serif;
+    background: #f9fafb;
+    color: #171717;
+    margin: 0;
+    padding: 1rem;
+  }
+  h1, h2 {
+    color: #3b82f6;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  /* Navigation Buttons */
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .nav button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #3b82f6;
+    background: white;
+    color: #3b82f6;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .nav button.active {
+    background: #3b82f6;
+    color: white;
+  }
+  /* Views */
+  .view {
+    display: none;
+  }
+  .view.active {
+    display: block;
+  }
+  /* Cards */
+  .card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgb(0 0 0 / 0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  /* Dashboard Grid */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media(min-width: 700px) {
+    .dashboard-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  /* Mood Buttons */
+  .mood-buttons {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+  .mood-buttons button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    background: #e5e7eb;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+  }
+  .mood-buttons button.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #2563eb;
+  }
+  /* Progress Bars */
+  .progress-container {
+    background: #e5e7eb;
+    border-radius: 9999px;
+    height: 12px;
+    width: 100%;
+    margin-top: 4px;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 9999px;
+  }
+  .progress-red {
+    background: #ef4444;
+  }
+  .progress-blue {
+    background: #3b82f6;
+  }
+  /* Chat */
+  #chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-radius: 6px;
+    background: white;
+    margin-bottom: 0.5rem;
+  }
+  .message {
+    max-width: 70%;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    line-height: 1.3;
+  }
+  .message.user {
+    background: #3b82f6;
+    color: white;
+    margin-left: auto;
+  }
+  .message.assistant {
+    background: #e5e7eb;
+    color: #171717;
+    margin-right: auto;
+  }
+  /* Chat input */
+  #chat-input-container {
+    display: flex;
+    gap: 0.5rem;
+  }
+  #user-message {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  #send-message {
+    padding: 0 1rem;
+    background: #3b82f6;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  /* Vital signs */
+  .vital-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  .vital-value.green {
+    color: #10b981;
+    font-weight: bold;
+  }
+  .vital-value.red {
+    color: #ef4444;
+    font-weight: bold;
+  }
+  /* Recommendations */
+  ul.recommendations {
+    list-style: none;
+    padding-left: 0;
+  }
+  ul.recommendations li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  ul.recommendations li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #3b82f6;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>MAITRI-Astronaut Wellness Assistant</h1>
+      <p>AI-powered support for psychological and physical well-being in space</p>
+    </header>
+
+    <nav class="nav">
+      <button class="active" data-view="dashboard">Dashboard</button>
+      <button data-view="chat">AI Chat</button>
+      <button data-view="vitals">Vitals Monitor</button>
+      <button data-view="resources">Wellness Resources</button>
+    </nav>
+
+    <!-- Dashboard View -->
+    <section id="dashboard" class="view active">
+      <div class="dashboard-grid">
+        <div class="card">
+          <h2>Psychological Well-being</h2>
+          <p>Current mental health metrics</p>
+          <div>
+            <label>Mood Level: <span id="mood-value">7</span>/10</label>
+            <div class="mood-buttons" id="mood-buttons">
+              <!-- Mood buttons 1 to 10 -->
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <label>Perceived Stress: <span id="stress-value">3</span>/10</label>
+            <div class="progress-container">
+              <div id="stress-bar" class="progress-bar progress-red" style="width: 30%;"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <label>Sleep Quality: <span id="sleep-value">6</span>/10</label>
+            <div class="progress-container">
+              <div id="sleep-bar" class="progress-bar progress-blue" style="width: 60%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Physical Health Metrics</h2>
+          <p>Current vital signs</p>
+          <div class="vital-row">
+            <span>Heart Rate:</span>
+            <span id="heart-rate" class="vital-value green">72 bpm</span>
+          </div>
+          <div class="vital-row">
+            <span>Oxygen Saturation:</span>
+            <span id="oxygen-level" class="vital-value green">98%</span>
+          </div>
+          <div class="vital-row">
+            <span>Body Temperature:</span>
+            <span id="body-temp" class="vital-value green">36.8°C</span>
+          </div>
+          <div class="vital-row">
+            <span>Blood Pressure:</span>
+            <span id="blood-pressure" class="vital-value green">120/80</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>AI Recommendations</h2>
+          <p>Personalized wellness suggestions</p>
+          <ul class="recommendations" id="recommendations-list">
+            <li>Practice 5 minutes of guided breathing exercises</li>
+            <li>Consider connecting with family during next communication window</li>
+            <li>Your sleep quality has been good, maintain your current routine</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chat View -->
+    <section id="chat" class="view">
+      <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <h2>AI Wellness Assistant</h2>
+        <p>Chat with your AI companion for support and guidance</p>
+        <div id="chat-messages"></div>
+        <div id="chat-input-container">
+          <input type="text" id="user-message" placeholder="Type your message here..." />
+          <button id="send-message">Send</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vitals View -->
+    <section id="vitals" class="view">
+      <div class="card">
+        <h2>Vitals Monitor</h2>
+        <p>Simulated real-time vital signs data</p>
+        <p><em>Note: Detailed charts can be added here.</em></p>
+        <ul>
+          <li>Heart Rate: <span id="vitals-heart-rate">72 bpm</span></li>
+          <li>Oxygen Saturation: <span id="vitals-oxygen">98%</span></li>
+          <li>Body Temperature: <span id="vitals-temp">36.8°C</span></li>
+          <li>Blood Pressure: <span id="vitals-bp">120/80</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Resources View -->
+    <section id="resources" class="view">
+      <div class="card">
+        <h2>Wellness Resources</h2>
+        <p>Guided meditation, exercises, cognitive activities, and social connection tools.</p>
+        <ul>
+          <li>5-Minute Breathing Exercise</li>
+          <li>Resistance Training</li>
+          <li>Memory Games</li>
+          <li>Schedule Family Call</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+<script>
+  // State
+  const state = {
+    moodScore: 7,
+    stressLevel: 3,
+    sleepQuality: 6,
+    vitalSigns: {
+      heartRate: 72,
+      oxygenSaturation: 98,
+      bodyTemperature: 36.8,
+      bloodPressure: '120/80'
+    },
+    chatMessages: [
+      { role: 'assistant', content: "Hello astronaut! I'm your AI wellness assistant. How are you feeling today?" }
+    ],
+    recommendations: [
+      "Practice 5 minutes of guided breathing exercises",
+      "Consider connecting with family during next communication window",
+      "Your sleep quality has been good, maintain your current routine"
+    ]
+  };
+
+  // Elements
+  const views = document.querySelectorAll('.view');
+  const navButtons = document.querySelectorAll('.nav button');
+  const moodButtonsContainer = document.getElementById('mood-buttons');
+  const moodValueSpan = document.getElementById('mood-value');
+  const stressValueSpan = document.getElementById('stress-value');
+  const stressBar = document.getElementById('stress-bar');
+  const sleepValueSpan = document.getElementById('sleep-value');
+  const sleepBar = document.getElementById('sleep-bar');
+  const heartRateSpan = document.getElementById('heart-rate');
+  const oxygenLevelSpan = document.getElementById('oxygen-level');
+  const bodyTempSpan = document.getElementById('body-temp');
+  const bloodPressureSpan = document.getElementById('blood-pressure');
+  const recommendationsList = document.getElementById('recommendations-list');
+  const chatMessagesDiv = document.getElementById('chat-messages');
+  const userMessageInput = document.getElementById('user-message');
+  const sendMessageButton = document.getElementById('send-message');
+
+  // Initialize mood buttons 1-10
+  function initMoodButtons() {
+    for(let i=1; i<=10; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.dataset.value = i;
+      if(i === state.moodScore) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        setMoodScore(i);
+      });
+      moodButtonsContainer.appendChild(btn);
+    }
+  }
+
+  // Set mood score
+  function setMoodScore(score) {
+    state.moodScore = score;
+    moodValueSpan.textContent = score;
+    // Update active button
+    moodButtonsContainer.querySelectorAll('button').forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.dataset.value) === score);
+    });
+  }
+
+  // Update vitals display
+  function updateVitals() {
+    const v = state.vitalSigns;
+    heartRateSpan.textContent = `${v.heartRate.toFixed(0)} bpm`;
+    oxygenLevelSpan.textContent = `${v.oxygenSaturation.toFixed(1)}%`;
+    bodyTempSpan.textContent = `${v.bodyTemperature.toFixed(1)}°C`;
+    bloodPressureSpan.textContent = v.bloodPressure;
+
+    // Color coding
+    heartRateSpan.className = 'vital-value ' + ((v.heartRate > 90 || v.heartRate < 60) ? 'red' : 'green');
+    oxygenLevelSpan.className = 'vital-value ' + (v.oxygenSaturation < 95 ? 'red' : 'green');
+    bodyTempSpan.className = 'vital-value ' + ((v.bodyTemperature > 37.5 || v.bodyTemperature < 36.0) ? 'red' : 'green');
+  }
+
+  // Update recommendations list
+  function updateRecommendations() {
+    recommendationsList.innerHTML = '';
+    state.recommendations.forEach(rec => {
+      const li = document.createElement('li');
+      li.textContent = rec;
+      recommendationsList.appendChild(li);
+    });
+  }
+
+  // Switch view
+  function switchView(viewId) {
+    views.forEach(v => v.classList.toggle('active', v.id === viewId));
+    navButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === viewId));
+  }
+
+  // Initialize chat messages
+  function initChat() {
+    chatMessagesDiv.innerHTML = '';
+    state.chatMessages.forEach(msg => {
+      addChatMessage(msg.role, msg.content);
+    });
+  }
+
+  // Add chat message
+  function addChatMessage(role, content) {
+    const div = document.createElement('div');
+    div.classList.add('message', role);
+    div.textContent = content;
+    chatMessagesDiv.appendChild(div);
+    chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+  }
+
+  // Handle sending chat message
+  function handleSendMessage() {
+    const msg = userMessageInput.value.trim();
+    if(!msg) return;
+    addChatMessage('user', msg);
+    userMessageInput.value = '';
+    generateAIResponse(msg);
+  }
+
+  // Generate AI response (simple keyword-based)
+  function generateAIResponse(userMsg) {
+    let response = '';
+    const msg = userMsg.toLowerCase();
+    if(msg.includes('stress') || msg.includes('anxious')) {
+      response = 'I notice you mentioned feeling stressed. Would you like to try a guided meditation exercise? Even 5 minutes can help.';
+    } else if(msg.includes('sleep') || msg.includes('tired')) {
+      response = 'Your sleep patterns look good. Maintaining your current schedule is recommended.';
+    } else if(msg.includes('lonel') || msg.includes('home')) {
+      response = 'Feeling lonely is normal. The next video call with mission control is in 3 hours.';
+    } else if(msg.includes('exercise') || msg.includes('workout')) {
+      response = 'Your physical activity is on track. Focus on lower body resistance exercises today.';
+    } else {
+      response = 'Thanks for sharing. Your biometrics are normal. Remember to hydrate well.';
+    }
+    setTimeout(() => addChatMessage('assistant', response), 1000);
+  }
+
+  // Simulate vital signs changes every 10 seconds
+  function simulateVitals() {
+    setInterval(() => {
+      const v = state.vitalSigns;
+      v.heartRate = Math.min(100, Math.max(60, v.heartRate + (Math.random() * 2 - 1)));
+      v.oxygenSaturation = Math.min(100, Math.max(95, v.oxygenSaturation + (Math.random() * 0.4 - 0.2)));
+      v.bodyTemperature = Math.min(37.5, Math.max(36.0, v.bodyTemperature + (Math.random() * 0.2 - 0.1)));
+      updateVitals();
+    }, 10000);
+  }
+
+  // Initialize app
+  function init() {
+    initMoodButtons();
+    updateVitals();
+    updateRecommendations();
+    initChat();
+
+    // Navigation buttons
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        switchView(btn.dataset.view);
+      });
+    });
+
+    // Chat send button and enter key
+    sendMessageButton.addEventListener('click', handleSendMessage);
+    userMessageInput.addEventListener('keypress', e => {
+      if(e.key === 'Enter') {
+        handleSendMessage();
+      }
+    });
+
+    simulateVitals();
+  }
+
+  window.onload = init;
+</script>
+</body>
+</html>
