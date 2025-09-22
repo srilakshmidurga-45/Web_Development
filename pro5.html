@@ -541,19 +541,33 @@
         const sendButton = document.getElementById('sendButton');
         
         // Predefined responses
-        const responses = {
-            'hi': 'Hi astronaut! How are you doing? Is everything ok? How are you feeling today?',
-            'hello': 'Hello! How can I assist you today?',
-            'how are you': 'I\'m functioning optimally, thank you for asking! How about you?',
-            'status': 'All systems are operational. Your vitals are stable and within normal parameters.',
-            'lonely': 'I understand space can feel isolating. Would you like to hear about the latest mission updates from Earth? Or perhaps some music?',
-            'stressed': 'I notice you might be feeling stressed. Would you like to try a 5-minute breathing exercise?',
-            'sleep': 'Your sleep quality has been good recently. Would you like tips for improving sleep in microgravity?',
-            'exercise': 'You have completed 70% of your daily exercise regimen. Keep up the good work!',
-            'help': 'I can help with: health monitoring, psychological support, exercise guidance, and spacecraft systems information. What do you need?',
-            'thank': 'You\'re welcome! Remember, I\'m here to support you 24/7.',
-            'default': 'I\'m not sure I understand. Could you rephrase that? I\'m here to help with your well-being aboard the spacecraft.'
-        };
+        // Predefined responses
+// Predefined responses
+const responses = {
+    'hi': 'Hi astronaut! How are you doing? Is everything ok? How are you feeling today?',
+    'hello': 'Hello! How can I assist you today?',
+    'how are you': 'I\'m functioning optimally, thank you for asking! How about you?',
+    'spacecraft status': 'All systems are operational. Your vitals are stable and within normal parameters.',
+    'lonely': 'I understand space can feel isolating. Would you like to hear about the latest mission updates from Earth? Or perhaps some music?',
+    'stressed': 'I notice you might be feeling stressed. Would you like to try a 5-minute breathing exercise?',
+    'sleep': 'Your sleep quality has been good recently. Would you like tips for improving sleep in microgravity?',
+    'exercise': 'You have completed 70% of your daily exercise regimen. Keep up the good work!',
+    'help': 'I can help with: health monitoring, psychological support, exercise guidance, and spacecraft systems information. What do you need?',
+    'thank you': 'You\'re welcome! Remember, I\'m here to support you 24/7.',
+
+    // New emotional/physical states
+    'sad': 'I sense you might be feeling sad. Remember, it’s normal to have ups and downs in space. Would you like to listen to some relaxing music or view Earth through the cameras?',
+    'nauseous': 'I notice you might be feeling nauseous. Try focusing on slow breathing and avoid sudden head movements. Do you want me to guide you through a short breathing exercise?',
+    'dizzy': 'Feeling dizzy could be due to microgravity effects. Please sit or lie down safely. I recommend drinking some water and resting for a while. Should I log this in your health report?',
+    'happy': 'That’s wonderful to hear! Keeping a positive mood is vital for long missions. Would you like me to play your favorite upbeat playlist to keep the energy going?',
+    'bored': 'Feeling bored? I can suggest a cognitive game, some music, or even a virtual Earth-view session to refresh your mood.',
+    'hungry': 'If you’re feeling hungry, I can suggest your next meal pack based on today’s nutrition schedule.',
+    'how fast are we moving?': 'You are currently orbiting Earth at approximately 28,000 km/h.'
+};
+
+// Default fallback
+const defaultResponse = 'I\'m not sure I understand. Could you rephrase that? I\'m here to help with your well-being aboard the spacecraft.';
+
         
         // Function to add message to chat
         function addMessage(text, isUser = false) {
